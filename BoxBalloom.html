@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Box Balloon</title>
+<script type="text/javascript">
+window.onload=function(){
+	var canvas = document.getElementById('canvas');
+    var context = canvas.getContext("2d");
+	canvas.width = window.innerHeight-2;
+    canvas.height = window.innerHeight-2;
+	var WIDTH = canvas.height;
+	var HEIGHT = canvas.height;
+
+	var bnum=-1;
+	var givennum=80;
+	var prcs=1024; //精度
+	var que=new Array();
+
+	var x0=0;
+	var y0=0;
+	var r0=prcs+1;
+	while (bnum<givennum-1){ 
+		var flag=1;
+		bnum++;
+		while (flag){
+			r0-=1;
+			x0=-prcs+r0;
+			y0=-prcs+r0;
+			flag=false;
+			while (Collide(x0,y0,r0)){
+
+				x0+=1;
+				if (x0>-prcs-y0 || x0+r0>0) {
+					x0=-prcs+r0;
+					y0+=1;
+				}
+				if (y0+r0>0) {
+					flag=true;
+					break;
+					}
+				}
+			
+			}
+		var aballoom1={
+			x:x0,
+			y:y0,
+			r:r0
+		}
+		que.push(aballoom1);
+
+		if (que[bnum].x!=0){
+			var aballoom2={
+				x:-que[bnum].x,
+				y:que[bnum].y,
+				r:que[bnum].r
+			}
+			var aballoom3={
+				x:que[bnum].x,
+				y:-que[bnum].y,
+				r:que[bnum].r
+			}
+			var aballoom4={
+				x:-que[bnum].x,
+				y:-que[bnum].y,
+				r:que[bnum].r
+			}
+			que.push(aballoom2);
+			que.push(aballoom3);
+			que.push(aballoom4);
+			bnum+=3;
+			
+			if (que[bnum].x!=que[bnum].y){
+				for (var j=0; j<4; j++){
+					bnum++;
+					var aballoom={
+						x:que[bnum-4].y,
+						y:que[bnum-4].x,
+						r:que[bnum-4].r
+						}
+					que.push(aballoom);
+				}
+				}
+			}
+		}	
+	
+	
+	for (var i=0; i<=givennum; i++){
+		DrawCircle(que[i].x/prcs, que[i].y/prcs, que[i].r/prcs)
+	}
+	
+	
+	function Collide(x, y, r){
+		if (x-r<-prcs || x+r>prcs || y-r<-prcs || y+r>prcs){
+				return true;
+			}
+		for (var i=0; i<bnum; i++){
+			var distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y),0.5);
+			if (distance<r+que[i].r){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	function DrawCircle(x, y, r){
+		context.fillStyle = "rgba(0, 0, 0, 0.382)";
+		context.beginPath();
+		context.arc(x*WIDTH/2+WIDTH/2, y*WIDTH/2+WIDTH/2, r*WIDTH/2, 0, Math.PI*2, false);
+		context.closePath();
+		context.fill();
+	}
+}
+</script>
+
+</head>
+<body style="margin:0px;padding:0px;">
+	<canvas id="canvas" width="640" height="640" style="border:1px solid #aaa;display:block;margin:0px auto;padding:0px;">
+	Please try another browser.
+	</canvas>
+</body>
+</html>
