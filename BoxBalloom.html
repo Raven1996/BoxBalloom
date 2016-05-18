@@ -18,15 +18,16 @@ window.onload=function(){
 
 	var x0=0;
 	var y0=0;
-	var r0=prcs;
+	var r0=prcs+1;
 	while (givennum>0){ 
-		r0+=1;
 		var flag=1;
 		bnum++;
 		while (flag){
-			r0-=1;
-			x0=-prcs+r0;
-			y0=-prcs+r0;
+			if (y0+r0>0){
+				r0-=1;
+				x0=-prcs+r0;
+				y0=-prcs+r0;
+				}
 			flag=false;
 			while (Collide(x0,y0,r0)){
 				x0+=1;
