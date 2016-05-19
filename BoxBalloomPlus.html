@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Box Balloon</title>
+<title>Box Balloon +</title>
 <script type="text/javascript">
 
 window.onload=function(){
@@ -16,10 +16,19 @@ function ClickFunction(){
 	context.fillRect(0, 0, 640, 640);
 	var bnum=-1;
 	var givennum=parseInt(document.getElementById("num").value);
-	var prcs=1280; //精度
+	var prcs=640; //精度
 	var que=new Array();
+	var dot=new Array();
+	var dnum=-1;
 	var flag;
-
+	
+	var adot={
+			x:0,
+			y:0
+		}
+	dot.push(adot);
+	dnum++;
+	
 	var x0=0;
 	var y0=0;
 	var r0=prcs+1;
@@ -27,55 +36,90 @@ function ClickFunction(){
 		flag=true;
 		bnum++;
 		while (flag){
-			if (y0+r0>0){
-				r0-=1;
+			if (x0==0 && y0==0){
+				r0--;
 				x0=-prcs+r0;
 				y0=-prcs+r0;
 				}
 			flag=false;
 			while (Collide(x0,y0,r0)){
-				x0+=1;
-				if (x0>-prcs-y0 || x0+r0>0) {
-					y0+=1;
-					x0=y0;
-				}
-				if (y0+r0>0) {
+				if (x0<0 && y0<0){
+					x0++;
+					if (x0==0){
+						x0=-prcs+r0;
+						y0++;
+						}
+					if (y0==0){
+						x0=prcs-r0;
+						y0=-prcs+r0;
+						}
+					}
+				else if (x0>0 && y0<0){
+					x0--;
+					if (x0==0){
+						x0=prcs-r0;
+						y0++;
+						}
+					if (y0==0){
+						x0=-prcs+r0;
+						y0=prcs-r0;
+						}
+					} 
+				else if (x0<0 && y0>0){
+					x0++;
+					if (x0==0){
+						x0=-prcs+r0;
+						y0--;
+						}
+					if (y0==0){
+						x0=prcs-r0;
+						y0=prcs-r0;
+						}
+					}
+				else if (x0>0 && y0>0){
+					x0--;
+					if (x0==0){
+						x0=prcs-r0;
+						y0--;
+						}
+					if (y0==0){
+						x0=0;
+						}
+					}
+				else if (x0==0 && y0==0){
 					flag=true;
 					break;
+					}
+				if (r0==prcs){
+					r0--;
+					x0=-prcs+r0;
+					y0=-prcs+r0;
 					}
 				}
 			
 			}
-		var aballoom1={
+		var aballoom={
 			x:x0,
 			y:y0,
 			r:r0
 		}
-		que.push(aballoom1);
+		que.push(aballoom);
 		
 		DrawCircle(que[bnum].x, que[bnum].y, que[bnum].r);
 		givennum-=1;
-
-		if (que[bnum].x!=0){
-			DrawCircle(-que[bnum].x, que[bnum].y, que[bnum].r);
-			DrawCircle(que[bnum].x, -que[bnum].y, que[bnum].r);
-			DrawCircle(-que[bnum].x, -que[bnum].y, que[bnum].r);
-			givennum-=3;
-			if (que[bnum].x!=que[bnum].y){
-				DrawCircle(que[bnum].y, que[bnum].x, que[bnum].r);
-				DrawCircle(-que[bnum].y, que[bnum].x, que[bnum].r);
-				DrawCircle(que[bnum].y, -que[bnum].x, que[bnum].r);
-				DrawCircle(-que[bnum].y, -que[bnum].x, que[bnum].r);
-				givennum-=4;
-				}
-			}
 		}
 	
 	function Collide(x, y, r){
-		var distance;
+		var distance
 		for (var i=0; i<bnum; i++){
 			distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y), 0.5);
 			if (distance<r+que[i].r){
+				return true;
+			}
+		}
+		for (var i=0; i<=dnum; i++){
+			distance = Math.pow((dot[i].x-x)*(dot[i].x-x)+(dot[i].y-y)*(dot[i].y-y), 0.5);
+			if (distance<r){
 				return true;
 			}
 		}
@@ -102,7 +146,7 @@ function ClickFunction(){
 		<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;">
 			<form style="word-break:keep-all;white-space:nowrap;overflow:hidden;">
 			数量：
-			<input id="num" type="text" style="line-height:1.5em;width:4em;" value="80"/>
+			<input id="num" type="text" style="line-height:1.5em;width:4em;" value="22"/>
 			</form>
 			<br />
 			<a type="button"  href="javascript:ClickFunction()" style="margin:0px auto;line-height:1.5em;text-decoration:none;background-color:#aaa;color:#fff;padding:0.5em 1em;border-radius:0.5em;">生成</a>
