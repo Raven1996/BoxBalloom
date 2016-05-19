@@ -3,23 +3,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Box Balloon</title>
 <script type="text/javascript">
-window.onload=function(){
-	var canvas = document.getElementById('canvas');
-    var context = canvas.getContext("2d");
-	canvas.width = window.innerHeight-2;
-    canvas.height = window.innerHeight-2;
-	var WIDTH = canvas.height;
-	var HEIGHT = canvas.height;
 
+window.onload=function(){
+	ClickFunction();
+	}
+
+function ClickFunction(){
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext("2d");
+	var WIDTH = canvas.width;
+	context.fillStyle = "#FFF";
+	context.fillRect(0, 0, 640, 640);
 	var bnum=-1;
-	var givennum=1000;
-	var prcs=2000; //精度
+	var givennum=parseInt(document.getElementById("num").value);
+	var prcs=1280; //精度
 	var que=new Array();
 
 	var x0=0;
 	var y0=0;
 	var r0=prcs+1;
-	while (givennum>0){ 
+	while (givennum>0&&r0>0){ 
 		var flag=1;
 		bnum++;
 		while (flag){
@@ -69,14 +72,14 @@ window.onload=function(){
 	
 	function Collide(x, y, r){
 		for (var i=0; i<bnum; i++){
-			var distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y),0.5);
+			var distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y), 0.5);
 			if (distance<r+que[i].r){
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	function DrawCircle(x, y, r){
 		context.fillStyle = "rgba(0, 0, 0, 0.618)";
 		context.beginPath();
@@ -88,9 +91,21 @@ window.onload=function(){
 </script>
 
 </head>
-<body style="margin:0px;padding:0px;">
-	<canvas id="canvas" width="640" height="640" style="border:1px solid #aaa;display:block;margin:0px auto;padding:0px;">
+<body style="margin:0px;padding:0px; overflow:hidden;">
+<div id="container" style="height:100%;width:100%;">
+	<canvas id="canvas" width="640" height="640" style="border:1px solid #aaa;position:absolute;left:40%;top:50%;transform:translate(-50%,-50%);">
 	Please try another browser.
 	</canvas>
+	<div id="left" style="height:100%;width:20%;position:absolute;right:0%;background-color:#DDD;font-family:Arial,'Microsoft YaHei';">
+		<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;">
+			<form style="word-break:keep-all;white-space:nowrap;overflow:hidden;">
+			数量：
+			<input id="num" type="text" style="line-height:1.5em;width:4em;" value="80"/>
+			</form>
+			<br />
+			<a type="button"  href="javascript:ClickFunction()" style="margin:0px auto;line-height:1.5em;text-decoration:none;background-color:#aaa;color:#fff;padding:0.5em 1em;border-radius:0.5em;">生成</a>
+		</div>
+	</div>
+</div>
 </body>
 </html>
