@@ -49,28 +49,25 @@ window.onload=function(){
 		}
 		que.push(aballoom1);
 		
-		DrawCircle(que[bnum].x/prcs, que[bnum].y/prcs, que[bnum].r/prcs);
+		DrawCircle(que[bnum].x, que[bnum].y, que[bnum].r);
 		givennum-=1;
 
 		if (que[bnum].x!=0){
-			DrawCircle(-que[bnum].x/prcs, que[bnum].y/prcs, que[bnum].r/prcs);
-			DrawCircle(que[bnum].x/prcs, -que[bnum].y/prcs, que[bnum].r/prcs);
-			DrawCircle(-que[bnum].x/prcs, -que[bnum].y/prcs, que[bnum].r/prcs);
+			DrawCircle(-que[bnum].x, que[bnum].y, que[bnum].r);
+			DrawCircle(que[bnum].x, -que[bnum].y, que[bnum].r);
+			DrawCircle(-que[bnum].x, -que[bnum].y, que[bnum].r);
 			givennum-=3;
 			if (que[bnum].x!=que[bnum].y){
-				DrawCircle(que[bnum].y/prcs, que[bnum].x/prcs, que[bnum].r/prcs);
-				DrawCircle(-que[bnum].y/prcs, que[bnum].x/prcs, que[bnum].r/prcs);
-				DrawCircle(que[bnum].y/prcs, -que[bnum].x/prcs, que[bnum].r/prcs);
-				DrawCircle(-que[bnum].y/prcs, -que[bnum].x/prcs, que[bnum].r/prcs);
+				DrawCircle(que[bnum].y, que[bnum].x, que[bnum].r);
+				DrawCircle(-que[bnum].y, que[bnum].x, que[bnum].r);
+				DrawCircle(que[bnum].y, -que[bnum].x, que[bnum].r);
+				DrawCircle(-que[bnum].y, -que[bnum].x, que[bnum].r);
 				givennum-=4;
 				}
 			}
 		}
 	
 	function Collide(x, y, r){
-		if (x-r<-prcs || x+r>prcs || y-r<-prcs || y+r>prcs){
-				return true;
-			}
 		for (var i=0; i<bnum; i++){
 			var distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y),0.5);
 			if (distance<r+que[i].r){
@@ -83,7 +80,7 @@ window.onload=function(){
 	function DrawCircle(x, y, r){
 		context.fillStyle = "rgba(0, 0, 0, 0.618)";
 		context.beginPath();
-		context.arc(x*WIDTH/2+WIDTH/2, y*WIDTH/2+WIDTH/2, r*WIDTH/2, 0, Math.PI*2, false);
+		context.arc(x*WIDTH/2/prcs+WIDTH/2, y*WIDTH/2/prcs+WIDTH/2, r*WIDTH/2/prcs, 0, Math.PI*2, false);
 		context.closePath();
 		context.fill();
 	}
