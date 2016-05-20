@@ -19,19 +19,15 @@ function ClickFunction(){
 	var prcs=1280; //精度
 	var que=new Array();
 	var flag;
+	var distance;
 
 	var x0=0;
 	var y0=0;
-	var r0=prcs+1;
+	var r0=prcs;
 	while (givennum>0&&r0>0){ 
 		flag=true;
 		bnum++;
-		while (flag){
-			if (y0+r0>0){
-				r0-=1;
-				x0=-prcs+r0;
-				y0=-prcs+r0;
-				}
+		while (flag){	
 			flag=false;
 			while (Collide(x0,y0,r0)){
 				x0+=1;
@@ -40,6 +36,9 @@ function ClickFunction(){
 					x0=y0;
 				}
 				if (y0+r0>0) {
+					r0-=1;
+					x0=-prcs+r0;
+					y0=-prcs+r0;
 					flag=true;
 					break;
 					}
@@ -72,10 +71,9 @@ function ClickFunction(){
 		}
 	
 	function Collide(x, y, r){
-		var distance;
 		for (var i=0; i<bnum; i++){
-			distance = Math.pow((que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y), 0.5);
-			if (distance<r+que[i].r){
+			distance = (que[i].x-x)*(que[i].x-x)+(que[i].y-y)*(que[i].y-y);
+			if (distance<(r+que[i].r)*(r+que[i].r)){
 				return true;
 			}
 		}
@@ -100,12 +98,12 @@ function ClickFunction(){
 	</canvas>
 	<div id="left" style="height:100%;width:20%;position:absolute;right:0%;background-color:#DDD;font-family:Arial,'Microsoft YaHei';">
 		<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;">
-			<form style="word-break:keep-all;white-space:nowrap;overflow:hidden;">
+			<form style="line-height:1.5em;word-break:keep-all;white-space:nowrap;overflow:hidden;">
 			数量：
 			<input id="num" type="text" style="line-height:1.5em;width:4em;" value="80"/>
 			</form>
 			<br />
-			<a type="button"  href="javascript:ClickFunction()" style="margin:0px auto;line-height:1.5em;text-decoration:none;background-color:#aaa;color:#fff;padding:0.5em 1em;border-radius:0.5em;">生成</a>
+			<a type="button" id="create" href="javascript:ClickFunction()" style="margin:0px auto;text-decoration:none;background-color:#aaa;color:#fff;padding:0.5em 1em;border-radius:0.5em;">生成</a>
 		</div>
 	</div>
 </div>
